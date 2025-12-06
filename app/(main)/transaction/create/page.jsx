@@ -4,8 +4,15 @@ import { AddTransactionForm } from "../_components/transaction-form";
 import { getTransaction } from "@/actions/transaction";
 
 export default async function AddTransactionPage({ searchParams }) {
+  // searchParams is a Promise in Next.js 15
+  const searchParamsValue = await searchParams;
   const accounts = await getUserAccounts();
-  const editId = searchParams?.edit;
+  console.log("Accounts loaded:", accounts?.length);
+
+  if (!accounts) {
+    return <div>Error loading accounts</div>;
+  }
+  const editId = searchParamsValue?.edit;
 
   let initialData = null;
   if (editId) {
